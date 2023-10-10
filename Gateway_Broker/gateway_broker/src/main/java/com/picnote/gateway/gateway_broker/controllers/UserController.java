@@ -25,12 +25,17 @@ public class UserController {
     
     @PostMapping("/register")
     public ResponseEntity<Object> registerUser(@RequestBody User user){
-        Map<String, String> response = new HashMap<>();
         try {
-            String message = _user.sendAndReciveMessage(user, "register").toString();
-            response.put("message", message);
-            return new ResponseEntity<Object>(response, HttpStatus.OK);
+            Map<String,String> message = _user.sendAndReciveMessage(user, "register");
+            if(message.size() == 0){
+                throw new Exception();
+            } else if (message.get("status").equals("inserted")){
+                return new ResponseEntity<Object>(message, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<Object>(message, HttpStatus.BAD_REQUEST);
+            }
         } catch (Exception e) {
+            Map<String, String> response = new HashMap<>();
             response.put("error", "A problem occured when trying to add this user. Please try agian later");
             return new ResponseEntity<Object>(response , HttpStatus.INTERNAL_SERVER_ERROR);
         }

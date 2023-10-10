@@ -1,5 +1,8 @@
 package com.picnote.gateway.gateway_broker.publisher;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,12 +31,21 @@ public class UserPublisher {
         rabbitTemplate.convertAndSend(exchangeName, userQueueKey, body, messagePostProcessor);
     }
 
-    public Object sendAndReciveMessage(Object body, String method){
+    public Map<String, String> sendAndReciveMessage(Object body, String method){
         MessagePostProcessor messagePostProcessor = message -> {
             message.getMessageProperties().getHeaders().put("method", method);
             return message;
         };
-        return rabbitTemplate.convertSendAndReceive(exchangeName, userQueueKey, body, messagePostProcessor);
+        Object response = rabbitTemplate.convertSendAndReceive(exchangeName, userQueueKey, body, messagePostProcessor);
+        
+        Map<String, String> obj = new HashMap<>();
+        if (response instanceof Map) {
+            obj = (Map<String, String>) response;
+            return obj;
+        } else {
+            // Handle the case where no response is received, return an empty Map or null as needed
+            return obj;
+        }
     }
 
 }
