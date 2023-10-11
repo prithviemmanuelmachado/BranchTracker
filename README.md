@@ -6,7 +6,7 @@
 * The Backend is developed using spring boot
 * The Backend consists of a gateway and 2 microservices
 * All user related activities are handled by User_Service
-* All picture related activitiees are handled by Picture_Service
+* All branch related activities are handled by Branch_Service
 * The gateway communicates with the microservices using rabbitMQ
 * Some functions are request/response type, some are just request and forget
-* For the frontend the app uses REST APIs for user related activities and web sockets for picture related activities
+* For the frontend the app uses REST APIs for almost all basic tasks and web sockets for branch chats
