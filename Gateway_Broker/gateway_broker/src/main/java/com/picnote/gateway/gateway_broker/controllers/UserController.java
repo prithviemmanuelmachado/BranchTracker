@@ -41,4 +41,22 @@ public class UserController {
         }
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<Object> login(@RequestBody User user){
+        try {
+            Map<String,String> message = _user.sendAndReciveMessage(user, "login");
+            if(message.size() == 0){
+                throw new Exception();
+            } else if (message.get("status").equals("success")){
+                return new ResponseEntity<Object>(message, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<Object>(message, HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            Map<String, String> response = new HashMap<>();
+            response.put("error", "A problem occured when trying to add this user. Please try agian later");
+            return new ResponseEntity<Object>(response , HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

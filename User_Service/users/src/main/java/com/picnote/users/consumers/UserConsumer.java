@@ -1,5 +1,6 @@
 package com.picnote.users.consumers;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Service;
 
+import com.google.common.hash.Hashing;
 import com.picnote.gateway.gateway_broker.models.User;
 import com.picnote.users.models.UserCollection;
 import com.picnote.users.services.UserService;
@@ -50,12 +52,14 @@ public class UserConsumer {
             u.setUserID(user.getUserID().toString());
             u.setEmail(user.getEmail());
             u.setName(user.getName());
-            u.setPassword(user.getPassword());
+            u.setPassword(Hashing.sha256().hashString(user.getPassword(), StandardCharsets.UTF_8).toString());
             if (senderId != null && correlationId != null) {
                 // for request response type messages 
-                Map<String, String> response = new HashMap<>();
+                Map<String, Object> response = new HashMap<>();
                 if(method.toLowerCase().equals("register".toLowerCase())){
                     response = userService.addUser(u);
+                }else if(method.toLowerCase().equals("login".toLowerCase())){
+                    response = userService.login(u);
                 }
                 this.sendResponse(senderId, correlationId, response);
             } else {

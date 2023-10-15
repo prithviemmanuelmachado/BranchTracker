@@ -1,4 +1,4 @@
-# PicNotes
+# Branch tracker
 > The aim of this project is to implement a RestAPI gateway and microservices in Spring boot using RabbitMQ for the backend, and Angular with Redux for the frontend
 
 # Architecture
@@ -9,4 +9,4 @@
 * All branch related activities are handled by Branch_Service
 * The gateway communicates with the microservices using rabbitMQ
 * Some functions are request/response type, some are just request and forget
-* For the frontend the app uses REST APIs for almost all basic tasks and web sockets for branch chats
+* For the frontend the app uses REST APIs for user tasks and web sockets for branch related tasks

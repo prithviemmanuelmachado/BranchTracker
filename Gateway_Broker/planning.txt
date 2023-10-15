@@ -1,0 +1,18 @@
+list of apis 
+    - Login -> Done
+    - Register -> Done
+    - List all associated branches -> Priority 2
+        need to send list of branches, associated user stories, associated stage that are linked to the logged in user
+    - Add new branch -> Priority 1
+        create a new branch or join an existing branch if it exisits
+    - Connection action -> Prioriyt 5
+        Approve or reject requests to join a branch
+    - Add task to a branch -> Priority 4
+        Add tasks to a branch
+    - Add message to a branch -> Priority 6
+        add a message to a discussion on a branch 
+    - Get Branch details -> Priority 3
+        get the details for a particular branch
+    - Move Branch stage -> Priority 6
+        Move the branch up or down the priority
+    
