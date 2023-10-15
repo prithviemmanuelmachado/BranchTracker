@@ -2,6 +2,8 @@ package com.picnote.gateway.gateway_broker.models;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Data;
 
 @Data
@@ -12,12 +14,15 @@ public class Peer {
     private UUID branchID;
 
     public Peer(
+        @JsonProperty("peerID")
         UUID peerID,
+        @JsonProperty("status")
         String status,
+        @JsonProperty("branchID")
         UUID branchID
     ){
-        this.peerID = peerID == null ? UUID.randomUUID() : peerID;
-        this.status = status.isBlank() || status.isEmpty() ? "PENDING" : status;
+        this.peerID = peerID;
+        this.status = status;
         this.branchID = branchID;
     }
 
