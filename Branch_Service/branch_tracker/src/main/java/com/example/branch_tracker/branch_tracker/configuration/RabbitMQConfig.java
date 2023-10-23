@@ -1,4 +1,4 @@
-package com.picnote.gateway.gateway_broker.configuration;
+package com.example.branch_tracker.branch_tracker.configuration;
 
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Binding;
@@ -16,12 +16,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    @Value("${rabbitmq.queue.user.name}")
-    private String userQueueName;
-    
-    @Value("${rabbitmq.queue.user.key}")
-    private String userQueueKey;
-
     @Value("${rabbitmq.queue.branch.name}")
     private String branchQueueName;
     
@@ -30,12 +24,6 @@ public class RabbitMQConfig {
 
     @Value("${rabbitmq.exchange.name}")
     private String exchangeName;
-
-    //spring bean for rabbitmq queue - user
-    @Bean
-    public Queue userQueue(){
-        return new Queue(userQueueName);
-    }
 
     //spring bean for rabbitmq queue - branch
     @Bean
@@ -53,20 +41,11 @@ public class RabbitMQConfig {
     @Bean
     public Binding bindingUser(){
         return BindingBuilder
-                .bind(userQueue())
-                .to(exchange())
-                .with(userQueueKey);
-    }
-
-    //binding queue to exchnage - branch
-    @Bean
-    public Binding bindingBranch(){
-        return BindingBuilder
                 .bind(branchQueue())
                 .to(exchange())
                 .with(branchQueueKey);
     }
-
+    
     //initializing obj to json convertor for message body
     @Bean
     public MessageConverter converter(){

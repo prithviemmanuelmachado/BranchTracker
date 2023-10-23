@@ -26,7 +26,7 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<Object> registerUser(@RequestBody User user){
         try {
-            Map<String,String> message = _user.sendAndReciveMessage(user, "register");
+            Map<String,Object> message = _user.sendAndReciveMessage(user, "register");
             if(message.size() == 0){
                 throw new Exception();
             } else if (message.get("status").equals("inserted")){
@@ -44,7 +44,7 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody User user){
         try {
-            Map<String,String> message = _user.sendAndReciveMessage(user, "login");
+            Map<String,Object> message = _user.sendAndReciveMessage(user, "login");
             if(message.size() == 0){
                 throw new Exception();
             } else if (message.get("status").equals("success")){

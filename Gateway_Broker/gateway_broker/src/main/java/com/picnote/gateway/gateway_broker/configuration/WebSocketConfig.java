@@ -14,9 +14,11 @@ public class WebSocketConfig extends AbstractSessionWebSocketMessageBrokerConfig
     @Override
     public void configureStompEndpoints(StompEndpointRegistry registry){
         registry.addEndpoint("/ws")
+                .addInterceptors(new WebSocketInterceptor())
                 .setAllowedOriginPatterns("*")
                 .withSockJS();
         registry.addEndpoint("/ws")
+                .addInterceptors(new WebSocketInterceptor())
                 .setAllowedOriginPatterns("*");
     }
 
@@ -25,7 +27,7 @@ public class WebSocketConfig extends AbstractSessionWebSocketMessageBrokerConfig
         //request queue
         registry.setApplicationDestinationPrefixes("/app");
         //response queue
-        registry.enableSimpleBroker("/topic");
+        registry.enableSimpleBroker("/topic", "/user");
     }
 
 }

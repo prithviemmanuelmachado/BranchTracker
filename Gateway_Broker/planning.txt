@@ -13,6 +13,7 @@ list of apis
         add a message to a discussion on a branch 
     - Get Branch details -> Priority 3
         get the details for a particular branch
-    - Move Branch stage -> Priority 6
+    - Move Branch stage -> Priority 7
         Move the branch up or down the priority
+    - Remove Task - Priority 8
     

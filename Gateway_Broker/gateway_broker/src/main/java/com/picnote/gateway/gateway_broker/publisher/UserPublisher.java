@@ -24,28 +24,34 @@ public class UserPublisher {
     }
 
     public void sendMessage(Object body, String method){
+
         MessagePostProcessor messagePostProcessor = message -> {
             message.getMessageProperties().getHeaders().put("method", method);
             return message;
         };
+
         rabbitTemplate.convertAndSend(exchangeName, userQueueKey, body, messagePostProcessor);
+
     }
 
-    public Map<String, String> sendAndReciveMessage(Object body, String method){
+    public Map<String, Object> sendAndReciveMessage(Object body, String method){
+
         MessagePostProcessor messagePostProcessor = message -> {
             message.getMessageProperties().getHeaders().put("method", method);
             return message;
         };
+
         Object response = rabbitTemplate.convertSendAndReceive(exchangeName, userQueueKey, body, messagePostProcessor);
         
-        Map<String, String> obj = new HashMap<>();
+        Map<String, Object> obj = new HashMap<>();
+
         if (response instanceof Map) {
-            obj = (Map<String, String>) response;
+            obj = (Map<String, Object>) response;
             return obj;
         } else {
-            // Handle the case where no response is received, return an empty Map or null as needed
             return obj;
         }
+        
     }
 
 }

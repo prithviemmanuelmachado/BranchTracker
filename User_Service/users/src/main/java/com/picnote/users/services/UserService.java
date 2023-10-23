@@ -46,7 +46,6 @@ public class UserService {
             }
             return response;            
         } catch (Exception e) {
-            // TODO: handle exception
             logger.error("error in add user service", e);
             response.put("message", "A problem occured when trying to add this user. Please try agian later");
             response.put("status", "error");
@@ -76,6 +75,7 @@ public class UserService {
                         .compact();
 
                     response.put("token", token);
+                    response.put("userID", searchedUser.getUserID());
                     response.put("status", "success");
                 } else {
                     response.put("message", "Invalid password");
@@ -87,7 +87,6 @@ public class UserService {
             }
             return response;            
         } catch (Exception e) {
-            // TODO: handle exception
             logger.error("error in login service", e);
             response.put("message", "A problem occured when trying to login. Please try agian later");
             response.put("status", "error");
