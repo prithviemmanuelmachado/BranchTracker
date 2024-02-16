@@ -50,7 +50,7 @@ public class BranchController {
     public void validateBranch(@Payload Map<String, Object> message, SimpMessageHeaderAccessor header){
         try {
             Map<String, Object> response = _branch.sendAndReciveMessage(message, "validate_branch");
-            if(response.get("status").toString() == "exists")
+            if(response.get("status").toString() == "exists" && response.get("ownerID") != null)
             {
                 List<String> userIDs = Arrays.asList(response.get("ownerID").toString());
 

@@ -61,24 +61,37 @@ public class BranchServices {
 
                 //send request to join existing brnanch
                 BranchCollection branch = existingBranch.getFirst();
+                String userID = decodedToken.get("userID").toString();
                 PeerCollection owner = _peer.findByBranchIDAndIsOwnerTrue(branch.getBranchID()).getFirst();
-                PeerCollection newPeer = new PeerCollection();
-                String newPeerID = UUID.randomUUID().toString();
-                newPeer.setPeerID(newPeerID);
-                newPeer.setOwner(false);
-                newPeer.setStatus("PENDING");
-                newPeer.setPeerName(decodedToken.get("name").toString());
-                newPeer.setPeerUserID(decodedToken.get("userID").toString());
-                newPeer.setBranchID(branch.getBranchID());
-                newPeer.setAcitonOn(new Date());
-                _peer.save(newPeer);
 
-                response.put("status", "exists");
-                response.put("message", "Branch already exists. Sent request to join the branch");
-                response.put("ownerID", owner.getPeerID());
-                response.put("peerID", newPeerID);
-                response.put("peer", decodedToken.get("name").toString());
-                response.put("status", "PENDING");
+                //check if the requester is the owner of the exisiting branch
+                if(_peer.findByBranchIDAndUserIDAndIsOwnerTrueSelectFields(branch.getBranchID(), userID).size() > 0){
+                    response.put("message", "You are already the owner of this branch");
+                } 
+                //check if the requester has a pending request already 
+                else if (_peer.findByBranchIDAndUserIDAndIsOwnerFalseSelectFields(branch.getBranchID(), userID).size() > 0){
+                    response.put("message", "Request to join the branch has alredy been sent. Please wait for the onwer to review");
+                }
+                //if not then create a new request
+                else{
+                    PeerCollection newPeer = new PeerCollection();
+                    String newPeerID = UUID.randomUUID().toString();
+                    newPeer.setPeerID(newPeerID);
+                    newPeer.setOwner(false);
+                    newPeer.setStatus("PENDING");
+                    newPeer.setPeerName(decodedToken.get("name").toString());
+                    newPeer.setPeerUserID(userID);
+                    newPeer.setBranchID(branch.getBranchID());
+                    newPeer.setAcitonOn(new Date());
+                    _peer.save(newPeer);
+
+                    response.put("message", "Branch already exists. Sent request to join the branch");
+                    response.put("ownerID", owner.getPeerUserID());
+                    response.put("peerID", newPeerID);
+                    response.put("peer", decodedToken.get("name").toString());
+                }
+
+                response.put("status", "existing");
                 response.put("code", "200");
 
             }            

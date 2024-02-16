@@ -16,6 +16,12 @@ public interface PeerRepository extends MongoRepository<PeerCollection, String>{
     @Query(value = "{ 'branchID' : ?0, 'isOwner': false, 'status': { '$ne' : 'REJECT' } }", fields = "{ 'peerID': 1, 'peerName': 1, 'status': 1 }")
     List<PeerCollection> findByBranchIDAndIsOwnerFalseSelectFields(String branchID);
 
+    @Query(value = "{ 'branchID' : ?0, 'userID' : ?1, 'isOwner': false }", fields = "{ 'peerID': 1 }")
+    List<PeerCollection> findByBranchIDAndUserIDAndIsOwnerTrueSelectFields(String branchID, String userID);
+
+    @Query(value = "{ 'branchID' : ?0, 'userID' : ?1, 'isOwner': false, 'status': { '$eq' : 'PENDING' } }", fields = "{ 'peerID': 1 }")
+    List<PeerCollection> findByBranchIDAndUserIDAndIsOwnerFalseSelectFields(String branchID, String userID);
+
     // value is the condition to match, ?0 is the firts param passed, fields is the data returned
     @Query(value = "{ 'peerUserID' : ?0 }", fields = "{ 'branchID' : 1 }")
     List<PeerCollection> findBranchIDsByPeerUserIDSelectFields(String peerUserID);
